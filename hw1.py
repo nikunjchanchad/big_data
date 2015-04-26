@@ -61,9 +61,12 @@ def getModels( year, make ):
 
 def addIds( modelSet ):
     for model in modelSet:
-        modelJson = json.loads( jsonResponse( baseUrl + yearUrl + str(model.year) + makeUrl + model.make + modelUrl + urllib.quote(model.model) ) )
-        modelArray = modelJson['Results']
-        model.updateId( modelArray[0]['VehicleId'] )
+        try:
+            modelJson = json.loads( jsonResponse( baseUrl + yearUrl + str(model.year) + makeUrl + model.make + modelUrl + urllib.quote(model.model) ) )
+            modelArray = modelJson['Results']
+            model.updateId( modelArray[0]['VehicleId'] )
+        except ValueError:
+            print "invalid url param"
 
 def getReport( vecId ):
     reportJson = json.loads( jsonResponse( baseUrl + idUrl + str(vecId) ) )
@@ -76,7 +79,7 @@ for year in years:
     getYearMakes( str( year ) )
 
 for yearMake in yearMakes:
-    if count < 10:
+    if count < 5:
         getModels( str(yearMake.year), yearMake.make )
         count = count + 1
 
