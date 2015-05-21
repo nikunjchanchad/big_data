@@ -1,8 +1,18 @@
 import urllib2
-import bs4 as BeautifulSoup
+from bs4 import BeautifulSoup
+import requests
 
-url = urllib2.urlopen("https://www.govtrack.us/data/congress/113/votes/2013/s11/data.json")
-content = url.read()
+
+#jquery?v=HfRSogE7Xh_0X5rNuOPS5q_95fTz0escN_lSv9VUsTU1:1
+
+url = requests.get("http://www.iihs.org/iihs/topics/driver-death-rates/jquery?v=HfRSogE7Xh_0X5rNuOPS5q_95fTz0escN_lSv9VUsTU1:1")
+content = url.text
 soup = BeautifulSoup(content)
 
-print soup
+expr = raw_input("Search for: ")
+
+for expr in soup.find_all(expr):
+	print expr.text
+
+
+
