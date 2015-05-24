@@ -1,4 +1,5 @@
 import pymongo
+import re
 from pymongo import MongoClient
 connection_string = 'mongodb://127.0.0.1:27017'
 client = MongoClient(connection_string)
@@ -11,8 +12,13 @@ class point:
         self.lat = lat
         self.lng = lng
 
-for row in collection:
-    class_point = point(row[DR NO],row[Location 1][0],row[Location 1][1])
-    a.append(class_point)
+for row in collection.find():
+    if row["Location 1"]:
+        b = []
+        str = row["Location 1"]
+        loc = re.sub(r'[()\s]',"",str)
+        b = loc.split(',')
+        class_point = point(row["DR NO"],b[0],b[1])
+        a.append(class_point)
 
 print a.count()
